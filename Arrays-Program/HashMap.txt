@@ -1,0 +1,78 @@
+How HashMap Works (General Concept & In Your Code)
+1️⃣ General Working of HashMap
+Key-Value Storage → Stores data in {key: value} pairs.
+Hashing → Uses a hash function to compute an index for fast lookups.
+Buckets → Data is stored in buckets based on hash values.
+Collision Handling → If two keys map to the same index, it handles using chaining (linked list) or open addressing.
+Operations Time Complexity:
+Insertion: O(1) on average
+Lookup: O(1) on average
+Deletion: O(1) on average
+Worst Case (if too many collisions): O(N)
+2️⃣ How HashMap Works in Your twoSum Code
+Step	Element (nums[i])	Complement (target - nums[i])	Check in HashMap?	HashMap (map) Before Update	Action
+1	2	9 - 2 = 7	❌ No	{}	Store {2: 0}
+2	7	9 - 7 = 2	✅ Yes (found 2)	{2: 0}	Return [0,1]
+Key Points: ✅ HashMap reduces lookup time from O(N) to O(1).
+✅ Stores numbers as keys and indices as values.
+✅ Checks for complement first, then stores the number.
+
+🔹 Key Takeaways for Future Reference
+Use HashMap when you need fast lookups (O(1)).
+Works best for problems involving checking existence (like twoSum).
+Stores key-value pairs with efficient retrieval.
+Handles collisions using chaining or open addressing.
+Insertion, deletion, and search are O(1) on average.
+Worst case O(N) when many collisions occur.
+Order is not maintained (Use LinkedHashMap if order matters).
+Use containsKey() to check if a key exists before accessing it.
+
+Summary: When to Use HashMap
+✅ Fast lookups (O(1))
+✅ Counting frequency of elements
+✅ Caching or memoization
+✅ Storing key-value relationships
+✅ Grouping data efficiently
+✅ Avoiding duplicate storage of elements
+
+
+❌ Scenario	❌ Why Not HashMap?	✅ Better Alternative
+Sorted Searches	HashMap does not maintain order	TreeMap (O(log N)) or Binary Search (O(log N))
+Range Queries	HashMap doesn’t support range-based searching	Binary Search or Segment Trees
+Prefix Search (Autocomplete)	HashMap doesn’t handle prefix-based searching	Trie Data Structure
+Finding Kth Smallest/Largest	HashMap doesn’t store elements in order	Priority Queue (Heap)
+
+
+Step 3️⃣: Directly Access the Value
+When we call studentMarks.get(102), the HashMap:
+
+Computes hashCode(102) = 98237
+Finds the index → 98237 % 16 = 5
+Directly jumps to index 5 in the array and returns the value 90.
+⚡ No need to search through all elements! This makes lookup O(1).
+
+🔹 What Happens When HashMap is Full? (Rehashing in Java)
+A HashMap in Java has a default size of 16 buckets (array slots). But what if more elements are added, and the size becomes full?
+
+🔹 Step 1️⃣: Load Factor & When Rehashing Happens
+Load Factor = 0.75 (Default in Java)
+This means when the HashMap reaches 75% capacity, Java doubles the size of the array and rearranges elements.
+Example:
+If the current size is 16, rehashing happens at 16 × 0.75 = 12 elements.
+The size then doubles to 32.
+/**************************code start *************************************/
+
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        HashMap<Integer, String> map = new HashMap<>(4, 0.75f);  // Small size for testing
+        map.put(1, "A");
+        map.put(2, "B");
+        map.put(3, "C");
+        map.put(4, "D");  // Here, rehashing will happen when adding next element
+        map.put(5, "E");  // Triggers resizing
+
+        System.out.println(map);
+    }
+}
