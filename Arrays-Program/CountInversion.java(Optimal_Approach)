@@ -1,0 +1,65 @@
+class Solution {
+   static int count=0;
+    private static void merge(int []arr,int low,int mid,int high)
+    {
+        ArrayList<Integer> temp=new ArrayList<>();
+        int left=low;
+        int right=mid+1;
+        while(left<=mid && right<=high)
+        {
+            if(arr[left]<=arr[right])
+            {
+                temp.add(arr[left]);
+                left++;
+            }
+            else
+            {
+                temp.add(arr[right]);
+                count+=(mid-left+1);
+                right++;
+            }
+        }
+        //if elements is still left on left side
+        while(left<=mid)
+        {
+            temp.add(arr[left]);
+            left++;
+        }
+        //if element is still left on right side
+        while(right<=high)
+        {
+            temp.add(arr[right]);
+            right++;
+        }
+        //transferring all elements from temp to arr
+        for(int i=low;i<=high;i++)
+        {
+            arr[i]=temp.get(i-low);
+        }
+        
+    }
+    
+    public static void mergeSort(int []arr,int low,int high)
+    {
+       int mid=0;
+        if(low>=high)
+        {
+            return ;
+        }
+         mid = (low+mid)/2;
+        mergeSort(arr,low,mid);
+        mergeSort(arr,mid+1,high);
+        merge(arr,low,mid,high);
+    }
+    
+    
+    
+    
+    // Function to count inversions in the array.
+    static int inversionCount(int arr[]) {
+        // Your Code Here
+        int n=arr.length;
+        mergeSort(arr,0,n-1);
+        return count;
+    }
+}
